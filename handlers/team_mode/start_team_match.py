@@ -1,5 +1,5 @@
 from pyrogram import filters
-from pyrogram.types import Message
+from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 from bot import bot
 from games.state_manager import create_game, get_game
 from filters.admins_only import admins_only
@@ -34,11 +34,17 @@ def register_handlers(bot):
             "active": True
         })
 
+        buttons = InlineKeyboardMarkup([
+            [
+                InlineKeyboardButton("🔵 Join Team A", callback_data="join_team_A"),
+                InlineKeyboardButton("🔴 Join Team B", callback_data="join_team_B")
+            ]
+        ])
+
         await message.reply(
             "🏁 **Team Match Started!**\n\n"
-            "Players can now join:\n"
-            "• `/join_team_a` – Join Team A\n"
-            "• `/join_team_b` – Join Team B\n\n"
-            "🔒 Only game admins can start match.\n"
-            "🧑‍⚖️ Referee: you!"
+            "Players can now join by clicking the buttons below.\n"
+            "🔒 Only game admins can start the match.\n"
+            f"🧑‍⚖️ Referee: {message.from_user.mention}",
+            reply_markup=buttons
         )
