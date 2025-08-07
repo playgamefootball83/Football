@@ -1,25 +1,15 @@
-# Memory-based game storage
+games = {}
 
-game_states = {}  # { chat_id: {...} }
+def create_game(chat_id, game_data):
+    games[chat_id] = game_data
 
-def create_game(chat_id: int, referee_id: int):
-    game_states[chat_id] = {
-        "referee": referee_id,
-        "teams": {},  # { "A": [user_id, ...], ... }
-        "roles": {},  # { user_id: "captain"/"goalkeeper" }
-        "round": 0,
-        "active": True,
-        "actions": {},  # for each round
-        "cards": {},  # yellow/red card record
-        "mode": "team",  # later: tournament
-    }
+def get_game(chat_id):
+    return games.get(chat_id)
 
-def is_game_running(chat_id: int) -> bool:
-    return chat_id in game_states and game_states[chat_id].get("active", False)
+def update_game(chat_id, new_data):
+    if chat_id in games:
+        games[chat_id].update(new_data)
 
-def get_game(chat_id: int):
-    return game_states.get(chat_id)
-
-def end_game(chat_id: int):
-    if chat_id in game_states:
-        game_states[chat_id]["active"] = False
+def delete_game(chat_id):
+    if chat_id in games:
+        del games[chat_id]
