@@ -1,21 +1,32 @@
-from bot import bot
+from pyrogram import Client
+from config import API_ID, API_HASH, BOT_TOKEN
+from pyrogram.handlers import MessageHandler
 
-# Match Setup
-import handlers.match_setup.select_mode
-import handlers.match_setup.team_mode_handler
-import handlers.match_setup.tournament_mode_handler
+# Bot initialize
+bot = Client("football_bot", api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
 
-# Team Mode
-import handlers.team_mode.kickoff
+# Import handlers for tournament and team modes
+import handlers.match_setup.start
+import handlers.match_setup.join
+import handlers.match_setup.roles
+import handlers.match_setup.kickoff
+
+# TEAM MODE imports (rename matched)
+import handlers.team_mode.start_team_match
+import handlers.team_mode.join_teams
+import handlers.team_mode.assign_roles
+import handlers.team_mode.kickoff_team_match
 import handlers.team_mode.rounds
 import handlers.team_mode.next_round
 
-# Tournament Mode
-import handlers.tournament_mode.kickoff
+# TOURNAMENT MODE imports
+import handlers.tournament_mode.start_tournament
+import handlers.tournament_mode.join_teams
+import handlers.tournament_mode.assign_roles
+import handlers.tournament_mode.kickoff_tournament
 import handlers.tournament_mode.rounds
 import handlers.tournament_mode.next_round
+import handlers.tournament_mode.end
 
-# Shared Handlers
-import handlers.shared.end_game
-
-bot.run()
+if __name__ == "__main__":
+    bot.run()
