@@ -1,18 +1,21 @@
 from pyrogram import filters
 from pyrogram.types import Message
 from bot import bot
-from states.game_state import game_data
+from games.state_manager import create_game, is_game_running
+from filters.custom_filters import is_referee
 
 def register_handlers(bot):
-    @bot.on_message(filters.command("start_football") & filters.group)
+    @bot.on_message(filters.command("start_football") & filters.group & is_referee)
     async def start_football(_, message: Message):
         chat_id = message.chat.id
-        if chat_id in game_data:
-            await message.reply("⚠️ Game already running.")
+
+        if is_game_running(chat_id):
+            await message.reply("⚠️ Ek match already chal raha hai is group me.")
             return
-        game_data[chat_id] = {
-            "teams": {"A": [], "B": []},
-            "round": 0,
-            "active": True
-        }
-        await message.reply("🏁 Football game started!\n\nPlayers use /join_team A or B to join.")
+
+        create_game(chat_id, message.from_user.id)
+        await message.reply(
+            "🏁 Football match started!\n\n"
+            "Players join using:\n`/join_team 1` to `/join_team 8`\n"
+            "Referee: Only you can control this tournament."
+        )
