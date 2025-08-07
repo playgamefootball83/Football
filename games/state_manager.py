@@ -1,4 +1,4 @@
-games = {}
+active_games = {}
 
 def create_game(chat_id, game_data):
     games[chat_id] = game_data
