@@ -1,9 +1,8 @@
 from pyrogram import Client
-from config import API_ID, API_HASH, BOT_TOKEN
 
 bot = Client(
     "football_bot",
-    api_id=API_ID,
-    api_hash=API_HASH,
-    bot_token=BOT_TOKEN
+    api_id=123456,           # replace with your API ID
+    api_hash="your_hash",    # replace with your API Hash
+    bot_token="your_token"   # replace with your Bot Token
 )
